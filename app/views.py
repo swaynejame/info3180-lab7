@@ -29,11 +29,15 @@ def upload():
         filename = secure_filename(photo.filename)
         photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        flash('File Saved', 'success')
-        return redirect(url_for('home'))
+        return {
+            "message": "File Upload Successful",
+            "filename": filename,
+            "description": description
+        }
 
-    return render_template('upload.html')
-
+    return {
+        "errors": [{},{}]
+    }
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
 # application.
