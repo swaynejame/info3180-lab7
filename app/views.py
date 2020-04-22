@@ -34,10 +34,11 @@ def upload():
             "filename": filename,
             "description": description
         }
-
-    return {
-        "errors": [{},{}]
-    }
+    else:
+        form_errors(uploadform)
+        return {
+            "errors": [{},{}]
+        }
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
 # application.
