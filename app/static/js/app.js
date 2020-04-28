@@ -51,6 +51,54 @@ const NotFound = Vue.component('not-found', {
     }
 })
 
+Vue.component('upload-form', {
+    template:`
+        <body>
+            <h1>Upload Form</h1>
+            <form @submit.prevent="uploadPhoto" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+
+            {# Add the file upload field as you learnt for Flask-WTF #}
+
+            <h1>Upload Photo</h1>
+
+            {% include 'flash_messages.html' %}
+
+            <div>
+                {{ form.description.label }}
+                {{ form.description }}
+            </div>
+            
+            <div>
+                {{ form.photo.label }}
+                {{ form.photo }}
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary">Upload file</button>
+            </form>
+        </body>
+    `,
+    methods:{
+        uploadPhoto: function(){
+
+            fetch("/api/upload", {
+                method: 'POST'
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (jsonResponse) {
+                    // display a success message
+                    console.log(jsonResponse);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }
+    // some options
+    });
+
 // Define Routes
 const router = new VueRouter({
     mode: 'history',
