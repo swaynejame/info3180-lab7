@@ -62,6 +62,17 @@ const UploadForm = Vue.component('upload-form', {
 
             <h1>Upload Form</h1>
 
+            <ul class="responses">
+                <li v-for="text in success" class="responses alert alert-success">
+                    {{ text.message }}
+                </li>
+
+                <li v-for="text in errors" class="responses alert alert-danger">
+                    {{ text.errors }}
+                    {{ text.errors }}
+                </li>
+            </ul>
+
             <p>Description</p>
             <textarea name="description" form="uploadForm">Enter text here...</textarea>
 
@@ -80,7 +91,10 @@ const UploadForm = Vue.component('upload-form', {
         </body>
     `,
     data: function(){
-        return{}
+        return{
+            success:{},
+            errors:{}
+        }
       },
     methods:{
         uploadPhoto: function(){
@@ -103,6 +117,8 @@ const UploadForm = Vue.component('upload-form', {
                 .then(function (jsonResponse) {
                     // display a success message
                     console.log(jsonResponse);
+                    self.success = jsonResponse.result;
+                    self.errors = jsonResponse.errors;
                 })
                 .catch(function (error) {
                     console.log(error);
