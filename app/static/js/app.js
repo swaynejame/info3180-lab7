@@ -63,13 +63,12 @@ const UploadForm = Vue.component('upload-form', {
             <h1>Upload Form</h1>
 
             <ul class="responses">
-                <li v-for="text in success" class="responses alert alert-success">
-                    {{ text.message }}
+                <li v-if="success.length > 0" class="responses alert alert-success">
+                    {{ success }}
                 </li>
 
-                <li v-for="text in errors" class="responses alert alert-danger">
-                    {{ text.errors }}
-                    {{ text.errors }}
+                <li v-for="error in errors" class="responses alert alert-danger">
+                    {{ error }}
                 </li>
             </ul>
 
@@ -92,8 +91,8 @@ const UploadForm = Vue.component('upload-form', {
     `,
     data: function(){
         return{
-            success:{},
-            errors:{}
+            success:'',
+            errors:[]
         }
       },
     methods:{
@@ -117,8 +116,14 @@ const UploadForm = Vue.component('upload-form', {
                 .then(function (jsonResponse) {
                     // display a success message
                     console.log(jsonResponse);
-                    self.success = jsonResponse.result;
-                    self.errors = jsonResponse.errors;
+                    
+                    if (jsonResponse.errors && jsonResponse.errors.length != 0) {
+                        self.errors = jsonResponse.errors;
+                        self.success = '';
+                    } else {
+                        self.success = jsonResponse.message;
+                        self.errors = [];
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
